@@ -1,0 +1,1759 @@
+//Need to add to ShoutScripts.lua
+
+function DusaShout()
+	FireWeaponFromUnit({ Weapon = "DusaShoutWeapon", Id = CurrentRun.Hero.ObjectId, DestinationId = CurrentRun.Hero.ObjectId, AutoEquip = true, ClearAllFireRequests = true })
+end
+
+function DusaMaxShout()
+	FireWeaponFromUnit({ Weapon = "DusaMaxShoutWeapon", Id = CurrentRun.Hero.ObjectId, DestinationId = CurrentRun.Hero.ObjectId, AutoEquip = true, ClearAllFireRequests = true })
+end
+
+//Need to add to LoodData.lua within the LootData table
+
+	-- Dusa
+	DusaUpgrade =
+	{
+		InheritFrom = { "BaseLoot", "BaseSoundPackage" },
+		CanReceiveGift = true,
+		AlwaysShowDefaultUseText = true,
+		Weight = 10,
+		Icon = "BoonSymbolChaos",
+		DoorIcon = "BoonSymbolChaosIsometric",
+		Color = { 192, 192, 192, 255 },
+		LightingColor = {192, 192, 192, 255},
+		LootColor = {192, 192, 192, 255},
+		SubtitleColor = {1.000, 0.353, 0.675, 1.0},
+		UpgradeSelectedSound = "/SFX/AphroditeWrathLoveChimes",
+
+		RequiredMinCompletedRuns = 1,
+
+		PriorityUpgrades = {"DusaRushTrait", "DusaRangedTrait", "DusaShoutTrait" },
+		WeaponUpgrades = { "DusaRushTrait", "DusaWeaponTrait", "DusaSecondaryTrait", "DusaRangedTrait", "DusaShoutTrait" },
+		Traits = { },
+		Consumables = { },
+
+		LinkedUpgrades =
+		{
+			AphroditeDurationTrait =
+			{
+				OneOf = { "AphroditeRushTrait", "AphroditeRangedTrait", "AphroditeWeaponTrait", "AphroditeSecondaryTrait" },
+			},
+			DusaWeakenTrait =
+			{
+				OneOf = { "DusaRushTrait", "DusaRangedTrait", "DusaShoutTrait"},
+			},
+
+		},
+
+		Speaker = "NPC_Dusa_01",
+		Portrait = "Portrait_Dusa_Default_01",
+		WrathPortrait = "Portrait_Dusa_Default_01",
+		Gender = "Female",
+		SpawnSound = "/SFX/DusaRattle",
+		FlavorTextIds =
+		{
+			"AphroditeUpgrade_FlavorText01",
+			"AphroditeUpgrade_FlavorText02",
+			"AphroditeUpgrade_FlavorText03",
+		},
+
+		OnSpawnVoiceLines =
+		{
+			BreakIfPlayed = true,
+			RandomRemaining = true,
+			PlayOnceThisRun = false,
+			PreLineWait = 0.85,
+			ChanceToPlay = 0.33,
+			RequiredTextLines = { "AphroditeFirstPickUp" },
+			RequiredFalseEncounters = { "DevotionTestTartarus", "DevotionTestAsphodel", "DevotionTestElysium", "Shop" },
+
+			-- Thanks, Ms. Dusa.
+			{ Cue = "/VO/ZagreusHome_0316" },
+			-- Hi, Aphrodite.
+			--{ Cue = "/VO/ZagreusField_0683" },
+		},
+
+		DuoPickupTextLineSets =
+		{
+			AphroditeWithPoseidon01 =
+			{
+				PlayOnce = true,
+				HasTraitNameInRoom = "ImprovedPomTrait",
+				RequiredTextLines = { "ZeusFirstPickUp", "PoseidonFirstPickUp", "AthenaFirstPickUp", "AphroditeFirstPickUp", "AresFirstPickUp", "ArtemisFirstPickUp", "DionysusFirstPickUp" },
+
+				{ Cue = "/VO/Aphrodite_0050",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort",
+					Text = "The thing to know about this family, dearest, is that, each of us, we have our little quirks. Although, we always stick together and our love for one another perseveres!" },
+				{ Cue = "/VO/Poseidon_0131",
+					PortraitExitWait = 0.35,
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 0.5,
+					StartSound = "/SFX/PoseidonBoonWaveCrash",
+					EndSound = "/Leftovers/World Sounds/MapZoomInShort",
+					Speaker = "NPC_Poseidon_01", Portrait = "Portrait_Poseidon_Default_01",
+					Text = "Oh, hoh, what do we have here, little Hades? Seems to me that you have company! Well, I'll just leave the two of you alone. My lips are sealed tighter than a warship hull!" },
+				{ Cue = "/VO/Aphrodite_0051",
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort",
+					EndSound = "/Leftovers/World Sounds/MapZoomInShort",
+					Text = "Oh, feel free to stay, Poseidon! I was just explaining what an idiot you are, though you're able to articulate this best! Anyway, dearest, what was I on about...?" },
+			},
+		},
+
+		PriorityPickupTextLineSets =
+		{
+			-- about other gods
+			AphroditeAboutZeus01 =
+			{
+				PlayOnce = true,
+				RequiredTextLines = { "ZeusFirstPickUp", "PoseidonFirstPickUp", "AthenaFirstPickUp", "AphroditeFirstPickUp", "AresFirstPickUp", "ArtemisFirstPickUp", "DionysusFirstPickUp" },
+				RequiredGodLoot = "ZeusUpgrade",
+				{ Cue = "/VO/Aphrodite_0044",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "Lord Zeus has made acquaintances with you? Oh I sometimes forget that he's your uncle! His favor's well worth having, I assure you." },
+			},
+			AphroditeAboutPoseidon01 =
+			{
+				PlayOnce = true,
+				RequiredTextLines = { "ZeusFirstPickUp", "PoseidonFirstPickUp", "AthenaFirstPickUp", "AphroditeFirstPickUp", "AresFirstPickUp", "ArtemisFirstPickUp", "DionysusFirstPickUp" },
+				RequiredGodLoot = "PoseidonUpgrade",
+				{ Cue = "/VO/Aphrodite_0045",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "That oaf Poseidon spoke to you already, didn't he? All bluster, muscles, and bravado, that one. I'm glad you're not the type." },
+			},
+			AphroditeAboutAthena01 =
+			{
+				PlayOnce = true,
+				RequiredTextLines = { "ZeusFirstPickUp", "PoseidonFirstPickUp", "AthenaFirstPickUp", "AphroditeFirstPickUp", "AresFirstPickUp", "ArtemisFirstPickUp", "DionysusFirstPickUp" },
+				RequiredGodLoot = "AthenaUpgrade",
+				{ Cue = "/VO/Aphrodite_0042",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "You've met Athena, dearest, so you know not all the ladies on Olympus are alike. And I, for one, am grateful to our forebears for that!" },
+			},
+			AphroditeAboutAres01 =
+			{
+				PlayOnce = true,
+				RequiredTextLines = { "ZeusFirstPickUp", "PoseidonFirstPickUp", "AthenaFirstPickUp", "AphroditeFirstPickUp", "AresFirstPickUp", "ArtemisFirstPickUp", "DionysusFirstPickUp" },
+				RequiredGodLoot = "AresUpgrade",
+				{ Cue = "/VO/Aphrodite_0046",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "I sense the mark of my lord Ares on you, love. He's poorly understood among the gods, yet surely you can see fair qualities in him, and me?" },
+			},
+			AphroditeAboutArtemis01 =
+			{
+				PlayOnce = true,
+				RequiredTextLines = { "ZeusFirstPickUp", "PoseidonFirstPickUp", "AthenaFirstPickUp", "AphroditeFirstPickUp", "AresFirstPickUp", "ArtemisFirstPickUp", "DionysusFirstPickUp" },
+				RequiredGodLoot = "ArtemisUpgrade",
+				{ Cue = "/VO/Aphrodite_0047",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "The sullen Artemis reached out to you, did she? Oh, that's adorable, dearest, just don't make any sudden movements with her, hm?" },
+			},
+			AphroditeAboutDionysus01 =
+			{
+				PlayOnce = true,
+				RequiredTextLines = { "ZeusFirstPickUp", "PoseidonFirstPickUp", "AthenaFirstPickUp", "AphroditeFirstPickUp", "AresFirstPickUp", "ArtemisFirstPickUp", "DionysusFirstPickUp" },
+				RequiredGodLoot = "DionysusUpgrade",
+				{ Cue = "/VO/Aphrodite_0048",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "You are so fortunate to have received the boon of Dionysus prior to my own! He, the most noble and important of us all, the god of wine, himself!" },
+			},
+
+			AphroditePostGiftPickup01 =
+			{
+				PlayOnce = true,
+				RequiredTextLines = { "AphroditeGift01", },
+				{ Cue = "/VO/Aphrodite_0040",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "How I love to have these unexpected little run-ins with you, love! You are just so spontaneous, and I've a liking for that sort of thing!" },
+			},
+			AphroditePostGiftPickup02 =
+			{
+				PlayOnce = true,
+				RequiredTextLines = { "AphroditeGift02", },
+				{ Cue = "/VO/Aphrodite_0041",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "Keep following that heart of yours, dearest! It's good enough a guide, believe you me. Mine tells me you are going to succeed!" },
+			},
+
+			AphroditePostGiftPickup04 =
+			{
+				PlayOnce = true,
+				RequiredTextLines = { "AphroditeGift04", },
+				{ Cue = "/VO/Aphrodite_0058",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "You do know that I'm married, don't you, love...? I'd forgive you if you didn't, for my husband, he is always busy with his work. I'm grateful that you're there for me to talk to!" },
+			},
+
+			AphroditePostFlashback01 =
+			{
+				PlayOnce = true,
+				RequiredTextLines = { "AphroditeFirstPickUp", "Flashback_Mother_01", },
+				{ Cue = "/VO/Aphrodite_0059",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "You're going to love it on Olympus, little godling. The air is beautiful and brisk, the gardens lush, the feasting plentiful...! Why, it must be the opposite of everything to which you are accustomed!" },
+			},
+			AphroditePostFlashback02 =
+			{
+				PlayOnce = true,
+				RequiredTextLines = { "Flashback_Mother_01", "AphroditePostFlashback01", },
+				{ Cue = "/VO/Aphrodite_0060",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "What shall we do here once you finally arrive? Perhaps we could go out and meet some mortals! I know all too many maidens and/or noble gentlemen who'd absolutely love to get to know you." },
+			},
+
+			AphroditeVsAchilles01 =
+			{
+				PlayOnce = true,
+				RequiredTextLines = { "AphroditeGift01", "AchillesGift01", },
+				RequiredMinCompletedRuns = 10,
+				{ Cue = "/VO/Aphrodite_0056",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "A little bird once told me that the shade of the great hero called Achilles now resides within your father's residence, dearest? I always wished to meet with him someday..." },
+			},
+			AphroditeVsAchilles02 =
+			{
+				PlayOnce = true,
+				RequiredTextLines = { "AphroditeVsAchilles01", "AchillesPostFlashback01" },
+				{ Cue = "/VO/Aphrodite_0057",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "You met Achilles after all, godling. He was quite instrumental in a war of my design. Still he resisted my attempts to sway his actions. You tell him, simply, I admire him." },
+			},
+
+			AphroditeVsMeg01 =
+			{
+				PlayOnce = true,
+				RequiredTextLines = { "AphroditeFirstPickUp", "FuryFirstAppearance" },
+				{ Cue = "/VO/Aphrodite_0054",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "You've had a brush with Megaera, the Fury, haven't you? Oh I know a thing or two about that one. Though, lately we Olympians no longer mingle with those living in the Underworld. You're the only exception!" },
+			},
+			AphroditeVsMeg02 =
+			{
+				PlayOnce = true,
+				RequiredTextLines = { "AphroditeFirstPickUp", "MegaeraGift06" },
+				RequiredFalseTextLinesLastRun = { "MegaeraGift06" },
+				{ Cue = "/VO/Aphrodite_0055",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "A little birdy told me recently that you and Megaera the Fury, why, you've grown quite close! Now do be careful around her, and, try not to get attached, there, hm?" },
+			},
+
+			AphroditeBackstory01 =
+			{
+				PlayOnce = true,
+				RequiredTextLines = { "AphroditeFirstPickUp", "Flashback_Mother_01" },
+				{ Cue = "/VO/Aphrodite_0053",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "I cannot help but wonder, dearest, why Lord Hades would have kept your mere existence hidden from us all this time. Perhaps he knew that, once you met us, you would stop at nothing to come seek us out!" },
+			},
+
+			AphroditeLowHealth01 =
+			{
+				PlayOnce = true,
+				RequiredTextLines = { "AphroditeFirstPickUp" },
+				RequiredMaxHealthFraction = 0.25,
+				RequiredMaxLastStands = 1,
+
+				{ Cue = "/VO/Aphrodite_0078",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "Oh, look at you, you poor, poor thing, you're hurt! Though, let me see if I can make it better." },
+			},
+			AphroditeLowHealth02 =
+			{
+				PlayOnce = true,
+				RequiredTextLines = { "AphroditeFirstPickUp" },
+				RequiredMaxHealthFraction = 0.25,
+				RequiredMaxLastStands = 1,
+
+				{ Cue = "/VO/Aphrodite_0079",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "Tsk, you're in no condition for an outing with me, dearest. Though, perhaps you might recover from your hardships with my aid?" },
+			},
+
+			AphroditeLegendaryPickUp01 =
+			{
+				PlayOnce = true,
+				RequiredTextLines = { "AphroditeFirstPickUp" },
+				ValuableUpgradeInRoom = {
+					AllAtLeastRarity = "Rare",
+					HasAtLeastRarity = "Epic",
+				},
+				{ Cue = "/VO/Aphrodite_0032",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "I have been waiting for a special moment to confess my great appreciation for your deeds... this moment's special enough, isn't it?" },
+			},
+			AphroditeLegendaryPickUp02 =
+			{
+				PlayOnce = true,
+				RequiredTextLines = { "AphroditeFirstPickUp" },
+				ValuableUpgradeInRoom = {
+					AllAtLeastRarity = "Rare",
+					HasAtLeastRarity = "Epic",
+				},
+				{ Cue = "/VO/Aphrodite_0033",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "My loveliest of blessings is reserved only for those who've earned my deepest adoration, so, congratulations, love! And here you go!" },
+			},
+		},
+
+		PickupTextLineSets =
+		{
+			AphroditeFirstPickUp =
+			{
+				PlayOnce = true,
+				RequiredTextLines = { "AthenaFirstPickUp", },
+				{ Cue = "/VO/ZagreusField_0782", Portrait = "Portrait_Zag_Default_01", Speaker = "CharProtag",
+					PreLineThreadedFunctionName = "PowerWordPresentation", PreLineThreadedFunctionArgs = { WaitTime = 4.23 },
+					PostLineAnim = "ZagreusInteractEquip", PostLineAnimTarget = "Hero", PostLineFunctionName = "BoonInteractPresentation",
+					Text = "I must be a mess, let's see here. Hi there! In the name of Hades! Olympus, I accept this message." },
+				{ Cue = "/VO/Aphrodite_0010",
+					PortraitExitWait = 1.7,
+					PreContentSound = "/Leftovers/Menu Sounds/TextReveal2",
+					EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "Why hello, hello, there, little godling. I have to say you're quite the specimen, and so, I've decided I shall aid you for the moment. You interested?" },
+			},
+			AphroditeMiscPickup01 =
+			{
+				RequiredTextLines = { "AphroditeFirstPickUp" },
+				{ Cue = "/VO/Dusa_0023",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/DusaRattle",
+					Text = "Anything I can do for you right now, or, maybe later...?" },
+			},
+		},
+
+		BoughtTextLines =
+		{
+			AphroditeLootBought01 =
+			{
+				PlayOnce = true,
+
+				{ Cue = "/VO/Aphrodite_0061",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "Looks like we meet again, dearest, here among the foul detritus of the boatman's wares! You truly take me to the best of places!" },
+			},
+			AphroditeLootBought02 =
+			{
+				PlayOnce = true,
+
+				{ Cue = "/VO/Aphrodite_0062",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "At first I didn't know how to get through to that odd river-boatman, Charon. Turns out he lusts for coin, and now I understand him well!" },
+			},
+		},
+
+		RejectionTextLines =
+		{
+			AphroditeRejection01 =
+			{
+				{ Cue = "/VO/Aphrodite_0063",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "And here I was beginning to think that we had something special going, no...? Look here, little godling, let me save you lots of future suffering: I happen to be the jealous type." },
+			},
+			AphroditeRejection02 =
+			{
+				{ Cue = "/VO/Aphrodite_0064",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "You'd best not take for granted my affection, godling. Yes, I've lots of it to go around; but I can just as easily rescind such privileges." },
+			},
+			AphroditeRejection03 =
+			{
+				{ Cue = "/VO/Aphrodite_0065",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "They say a lot of things about me, dearest; and they'll tell you, in your dealings with me, ample caution is in order. Let me show you why." },
+			},
+			AphroditeRejection04 =
+			{
+				{ Cue = "/VO/Aphrodite_0066",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "Don't ever take me for some thoughtless nymph to be manipulated, dearest. I expect reciprocal devotion from you, do you understand?" },
+			},
+			AphroditeRejection05 =
+			{
+				{ Cue = "/VO/Aphrodite_0067",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "Oh really? You shall find I don't take such rejections lying down, and you shall find it out the hard way." },
+			},
+			AphroditeRejection06 =
+			{
+				{ Cue = "/VO/Aphrodite_0068",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "If it's your wish to test the limits of the fine relationship we've built, why then, I can confirm you're testing them, all right." },
+			},
+		},
+
+		RejectionVoiceLines =
+		{
+			RandomRemaining = true,
+			BreakIfPlayed = true,
+			PreLineWait = 1.0,
+			RequiredEncounters = { "DevotionTestTartarus", "DevotionTestAsphodel", "DevotionTestElysium", },
+			SuccessiveChanceToPlay = 0.5,
+
+			-- Forgive me, Aphrodite.
+			{ Cue = "/VO/ZagreusField_0407" },
+			-- Did what I had to do.
+			{ Cue = "/VO/ZagreusField_0408", RequiredPlayed = { "/VO/ZagreusField_0407" } },
+			-- She'll get over it.
+			{ Cue = "/VO/ZagreusField_0410", RequiredPlayed = { "/VO/ZagreusField_0407" } },
+			-- Damned either way I guess.
+			{ Cue = "/VO/ZagreusField_0167", RequiredPlayed = { "/VO/ZagreusField_0407" } },
+			-- So that's the way it is then.
+			{ Cue = "/VO/ZagreusField_0168", RequiredPlayed = { "/VO/ZagreusField_0407" } },
+		},
+
+		MakeUpTextLines =
+		{
+			AphroditeMakeUp01 =
+			{
+				{ Cue = "/VO/Aphrodite_0069",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "Let's say we kissed and made up, dearest. Just, do not anger me again, or I might come down and kill you there myself!" },
+			},
+			AphroditeMakeUp02 =
+			{
+				{ Cue = "/VO/Aphrodite_0070",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "Alas that passion sometimes drives me into vengeance, dearest! Yet, who among us isn't without vices, hm?" },
+			},
+			AphroditeMakeUp03 =
+			{
+				{ Cue = "/VO/Aphrodite_0071",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "Oh, how I hate to fight with you like this! Let's forgive each other and forget, go back to how things used to be?" },
+			},
+			AphroditeMakeUp04 =
+			{
+				{ Cue = "/VO/Aphrodite_0072",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "I'm not angry with you any longer, dearest! Though, might I suggest you take some extra steps to keep it that way, hm?" },
+			},
+			AphroditeMakeUp05 =
+			{
+				{ Cue = "/VO/Aphrodite_0073",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "A loving heart is a forgiving heart, don't you agree? So I shall let this little matter slide, and you've my loving heart to thank for it, hm-hm!" },
+			},
+			AphroditeMakeUp06 =
+			{
+				{ Cue = "/VO/Aphrodite_0074",
+					PreLineFunctionName = "BoonInteractPresentation", PreLineWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "The truth is I'm a lover, not a fighter, dearest. So how about we call this matter put to bed, and get on with our lives?" },
+			},
+		},
+
+		GiftTextLineSets =
+		{
+			-- gives gift in exchange
+			AphroditeGift01 =
+			{
+				PlayOnce = true,
+				{ Cue = "/VO/ZagreusHome_0125", Portrait = "Portrait_Zag_Default_01", Speaker = "CharProtag",
+					PreLineAnim = "ZagreusTalkEmpathyStart", PreLineAnimTarget = "Hero",
+					PostLineAnim = "ZagreusTalkEmpathy_Return", PostLineAnimTarget = "Hero",
+					PostLineFunctionName = "BoonInteractPresentation",
+					Text = "Lady Aphrodite, I am truly blessed simply to have made your acquaintance, so, this is for you." },
+				{ Cue = "/VO/Aphrodite_0037",
+					PortraitExitWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "Lasting relationships are built on reciprocity. So if you lavish me with gifts, why, what am I to do but give you something in return?" },
+			},
+			AphroditeGift02 =
+			{
+				PlayOnce = true,
+				RequiredTextLines = { "AphroditeGift01" },
+				{ Cue = "/VO/ZagreusHome_0536", Portrait = "Portrait_Zag_Default_01", Speaker = "CharProtag",
+					PreLineAnim = "ZagreusTalkDenialStart", PreLineAnimTarget = "Hero",
+					PostLineAnim = "ZagreusTalkDenialReturnToIdle", PostLineAnimTarget = "Hero",
+					PostLineFunctionName = "BoonInteractPresentation",
+					Text = "My lady Aphrodite, if not for our acquaintance, I am certain that my days or nights would be much drearier indeed." },
+				{ Cue = "/VO/Aphrodite_0034",
+					PortraitExitWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "Why, dearest, such a wonderfully thoughtful gift, for me? I love it, and I would be lying if I said you shouldn't have!" },
+			},
+			AphroditeGift03 =
+			{
+				PlayOnce = true,
+				RequiredTextLines = { "AphroditeGift02" },
+				{ Cue = "/VO/ZagreusHome_0537", Portrait = "Portrait_Zag_Default_01", Speaker = "CharProtag",
+					PreLineAnim = "ZagreusTalkDenialStart", PreLineAnimTarget = "Hero",
+					PostLineAnim = "ZagreusTalkDenialReturnToIdle", PostLineAnimTarget = "Hero",
+					PostLineFunctionName = "BoonInteractPresentation",
+					Text = "Lady Aphrodite, I'm afraid there really isn't much here worthy of you, but perhaps this can suffice." },
+				{ Cue = "/VO/Aphrodite_0035",
+					PortraitExitWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "My, but if this isn't such a treasure to behold, and I accept it as a sign of your affection! Of something even more, perhaps...?" },
+			},
+			AphroditeGift04 =
+			{
+				PlayOnce = true,
+				RequiredTextLines = { "AphroditeGift03" },
+				{ Cue = "/VO/ZagreusHome_0538", Portrait = "Portrait_Zag_Default_01", Speaker = "CharProtag",
+					PreLineAnim = "ZagreusTalkDenialStart", PreLineAnimTarget = "Hero",
+					PostLineAnim = "ZagreusTalkDenialReturnToIdle", PostLineAnimTarget = "Hero",
+					PostLineFunctionName = "BoonInteractPresentation",
+					Text = "Dear Aphrodite, surely you have all the offerings you can stand, but I would ask that you accept one more." },
+				{ Cue = "/VO/Aphrodite_0036",
+					PortraitExitWait = 1.0,
+					StartSound = "/Leftovers/World Sounds/MapZoomInShort", EndSound = "/SFX/AphroditeBoonLoveChimes",
+					Text = "Ah, dearest, but it stirs my heart to know you care so deeply for our wonderful relationship! To celebrate it with such princely gifts!" },
+			},
+		},
+
+		GiftGivenVoiceLines =
+		{
+			BreakIfPlayed = true,
+			PreLineWait = 1.0,
+			PlayFromTarget = true,
+
+			-- I'm honored, Aphrodite.
+			{ Cue = "/VO/ZagreusHome_0325" },
+		},
+
+		ShoutActivationSound = "/SFX/DusaRattle",
+		ShoutVoiceLines =
+		{
+			{
+				BreakIfPlayed = true,
+				PlayFromTarget = true,
+				RandomRemaining = true,
+				NoTarget = true,
+				CooldownTime = 30,
+				RequiredKillEnemiesFound = true,
+				RequiredFalseSpurnedGodName = "AphroditeUpgrade",
+
+				-- Hah, haha...!
+				{ Cue = "/VO/Dusa_0060" },
+				-- Y, your Highness!
+				{ Cue = "/VO/Dusa_0052" },
+				-- Gasp!
+				{ Cue = "/VO/Dusa_0053" },
+			},
+			{
+				BreakIfPlayed = true,
+				PlayFromTarget = true,
+				RandomRemaining = true,
+				NoTarget = true,
+				CooldownTime = 30,
+				RequiredKillEnemiesFound = true,
+				RequiredSpurnedGodName = "AphroditeUpgrade",
+
+				-- Best not to anger me.
+				{ Cue = "/VO/Aphrodite_0108" },
+				-- You are impossible!
+				{ Cue = "/VO/Aphrodite_0110" },
+				-- What has gotten into you?
+				{ Cue = "/VO/Aphrodite_0111" },
+				-- You truly dare?
+				{ Cue = "/VO/Aphrodite_0112" },
+				-- Such utter foolishness.
+				{ Cue = "/VO/Aphrodite_0113" },
+				-- You don't want to make me angrier.
+				{ Cue = "/VO/Aphrodite_0114" },
+			},
+		},
+
+		SwapUpgradePickedVoiceLines =
+		{
+			BreakIfPlayed = true,
+			RandomRemaining = true,
+			PreLineWait = 1.05,
+			SuccessiveChanceToPlay = 0.33,
+			CooldownName = "SaidAphroditeRecently",
+			CooldownTime = 40,
+			RequiresLastUpgradeSwapped = true,
+
+			-- Lady Aphrodite, how can I say no?
+			{ Cue = "/VO/ZagreusField_1884" },
+			-- A lovely offer, Aphrodite.
+			{ Cue = "/VO/ZagreusField_1885" },
+			-- Lady Aphrodite, I gladly accept.
+			{ Cue = "/VO/ZagreusField_1886" },
+		},
+	},
+
+//Need to add to TraitData.lua to the TraitData table
+
+	-- Dusa
+	DusaRangedTrait =
+	{
+		Icon = "Boon_Zeus_05",
+		InheritFrom = { "ShopTier1Trait" },
+		God = "Dues",
+		Slot = "Ranged",
+		CustomTrayText = "ZeusRangedTrait_Tray",
+		RarityLevels =
+		{
+			Common =
+			{
+				Multiplier = 1.0,
+			},
+			Rare =
+			{
+				Multiplier = 1.2,
+			},
+			Epic =
+			{
+				Multiplier = 1.4,
+			},
+			Heroic =
+			{
+				Multiplier = 1.6,
+			}
+		},
+		PropertyChanges =
+		{
+			{
+				WeaponNames = WeaponSets.HeroNonPhysicalWeapons,
+				WeaponProperty = "Projectile",
+				ChangeValue = "DusaProjectile",
+				ChangeType = "Absolute",
+			},
+			{
+				WeaponNames = WeaponSets.HeroNonPhysicalWeapons,
+				ProjectileProperty = "DamageLow",
+				BaseMin = 60,
+				BaseMax = 60,
+				DepthMult = DepthDamageMultiplier,
+				IdenticalMultiplier =
+				{
+					Value = DuplicateStrongMultiplier,
+				},
+				ExtractValue =
+				{
+					ExtractAs = "TooltipDamage",
+				}
+			},
+			{
+				WeaponNames = WeaponSets.HeroNonPhysicalWeapons,
+				ProjectileProperty = "DamageHigh",
+				DeriveValueFrom = "DamageLow"
+			},
+		},
+		ExtractValues =
+		{
+			{
+				ExtractAs = "BaseRangedDamage",
+				External = true,
+				BaseType = "Projectile",
+				BaseName = "RangedWeapon",
+				BaseProperty = "DamageLow",
+			}
+		}
+	},
+	
+	DusaShoutTrait =
+	{
+		Icon = "Boon_Artemis_04",
+		InheritFrom = { "ShopTier1Trait" },
+		RequiredTextLines = { "PoseidonWrathIntro01" },
+		God = "Dusa",
+		Slot = "Shout",
+		RarityLevels =
+		{
+			Common =
+			{
+				Multiplier = 1.00,
+			},
+			Rare =
+			{
+				Multiplier = 1.10,
+			},
+			Epic =
+			{
+				Multiplier = 1.20,
+			},
+			Heroic =
+			{
+				Multiplier = 1.30,
+			}
+		},
+		AddShout =
+		{
+			FunctionName = "DusaShout",
+			MaxFunctionName = "DusaMaxShout",
+			Cost = 25,
+			SuperDuration = 0.8,
+			IsBurst = true,
+			ExtractValues =
+			{
+				{
+					Key = "Cost",
+					ExtractAs = "TooltipWrathStocks",
+					Format = "WrathStocks",
+					SkipAutoExtract = true
+				}
+			}
+		},
+		PreEquipWeapons = {"ArtemisMaxShoutWeapon", "ArtemisShoutWeapon",},
+		PropertyChanges =
+		{
+			{
+				WeaponNames = {"ArtemisMaxShoutWeapon", "ArtemisShoutWeapon",},
+				ProjectileProperty = "DamageLow",
+				BaseMin = 45,
+				BaseMax = 45,
+				DepthMult = DepthDamageMultiplier,
+				IdenticalMultiplier =
+				{
+					Value = DuplicateMultiplier,
+				},
+				ExtractValue =
+				{
+					ExtractAs = "TooltipDamage",
+				}
+			},
+			{
+				WeaponNames = {"ArtemisMaxShoutWeapon", "ArtemisShoutWeapon",},
+				ProjectileProperty = "DamageHigh",
+				DeriveValueFrom = "DamageLow"
+			},
+			{
+				WeaponNames = {"ArtemisMaxShoutWeapon", "ArtemisShoutWeapon",},
+				ProjectileProperty = "CriticalHitChance",
+				BaseMin = 0.35,
+				BaseMax = 0.35,
+				ChangeType = "Add",
+				IdenticalMultiplier =
+				{
+					Value = -1,
+					MinMultiplier = 0,
+				},
+				ExtractValue =
+				{
+					ExtractAs = "TooltipCritChance",
+					Format = "Percent",
+					SkipAutoExtract = true
+				}
+			},
+		}
+	},
+
+	DusaWeaponTrait =
+	{
+		Icon = "Boon_Zeus_04",
+		InheritFrom = { "ShopTier1Trait" },
+		God = "Dusa",
+		Slot = "Melee",
+		LegalOnDamageWeapons = WeaponSets.HeroPhysicalWeapons,
+		RarityLevels =
+		{
+			Common =
+			{
+				Multiplier = 1.00,
+			},
+			Rare =
+			{
+				Multiplier = 1.25,
+			},
+			Epic =
+			{
+				Multiplier = 1.50,
+			},
+			Heroic =
+			{
+				Multiplier = 2.0,
+			}
+		},
+		AddOutgoingDamageModifiers =
+		{
+			ValidWeapons = WeaponSets.HeroPhysicalWeapons,
+			HealthBufferDamageMultiplier = 2.5,
+			ValidWeaponMultiplier =
+			{
+				BaseValue = 1.2,
+				SourceIsMultiplier = true,
+				IdenticalMultiplier =
+				{
+					Value = DuplicateMultiplier,
+				},
+			},
+			ValidWeapons = WeaponSets.HeroPhysicalWeapons,
+			ExtractValues =
+			{
+				{
+					Key = "ValidWeaponMultiplier",
+					ExtractAs = "TooltipDamage",
+					Format = "PercentDelta",
+				},
+			}
+		},
+		PropertyChanges =
+		{
+			{
+				WeaponName = "ChainLightning",
+				ProjectileProperty = "DamageLow",
+				BaseMin = 20,
+				BaseMax = 20,
+				DepthMult = DepthDamageMultiplier,
+				AsInt = true,
+				IdenticalMultiplier =
+				{
+					Value = DuplicateMultiplier,
+				},
+				ExtractValue =
+				{
+					ExtractAs = "TooltipDamage",
+				}
+			},
+
+			{
+				WeaponName = "SwordWeapon",
+				WeaponProperty = "FireFx",
+				ChangeValue = "SwordSwipeAFlipped-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "SwordWeapon2",
+				WeaponProperty = "FireFx",
+				ChangeValue = "SwordSwipeB-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+			{
+				WeaponName = "SwordWeapon3",
+				WeaponProperty = "FireFx",
+				ChangeValue = "SwordSwipeC-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "SwordWeapon3",
+				WeaponProperty = "ChargeFx",
+				ChangeValue = "ChargeAttack-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "SwordWeapon",
+				ProjectileProperty = "StartFx",
+				ChangeValue = "SwordSwipeA-Emitter-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "SwordWeapon2",
+				ProjectileProperty = "StartFx",
+				ChangeValue = "SwordSwipeA-Emitter-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+			{
+				WeaponName = "SwordWeaponDash",
+				WeaponProperty = "FireFx",
+				ChangeValue = "SwordSwipeC-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "SwordWeaponDash",
+				WeaponProperty = "ChargeFx",
+				ChangeValue = "ChargeAttack-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+			{
+				WeaponName = "SpearWeapon",
+				ProjectileProperty = "Graphic",
+				ChangeValue = "SpearThrustProjectile-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+			{
+				WeaponName = "SpearWeapon2",
+				ProjectileProperty = "Graphic",
+				ChangeValue = "SpearThrustProjectile-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+			{
+				WeaponName = "SpearWeapon3",
+				ProjectileProperty = "Graphic",
+				ChangeValue = "SpearThrustProjectile-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+			{
+				WeaponName = "SpearWeaponDash",
+				ProjectileProperty = "Graphic",
+				ChangeValue = "SpearDashSwipe-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "SpearWeaponSpin",
+				ProjectileProperty = "DetonateGraphic",
+				ChangeValue = "SpearSwipe360-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "SpearWeaponSpin2",
+				ProjectileProperty = "DetonateGraphic",
+				ChangeValue = "SpearSwipe360-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "SpearWeaponSpin3",
+				ProjectileProperty = "DetonateGraphic",
+				ChangeValue = "SpearSwipe360-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "BowWeapon",
+				ProjectileProperty = "Graphic",
+				ChangeValue = "BowWeaponArrow-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+
+			{
+				WeaponName = "BowWeapon",
+				WeaponProperty = "ChargeStartFx",
+				ChangeValue = "BowCharge-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "BowWeaponDash",
+				ProjectileProperty = "Graphic",
+				ChangeValue = "BowWeaponArrow-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "BowWeaponDash",
+				WeaponProperty = "ChargeStartFx",
+				ChangeValue = "BowChargeFast-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "ShieldWeapon",
+				ProjectileProperty = "DetonateGraphic",
+				ChangeValue = "ShieldSwipe-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+			{
+				WeaponName = "ShieldWeaponDash",
+				ProjectileProperty = "DetonateGraphic",
+				ChangeValue = "ShieldSwipeDash-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "ShieldWeaponRush",
+				WeaponProperty = "ChargeStartFx",
+				ChangeValue = "ShieldCharge-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "ShieldWeaponRush",
+				ProjectileProperty = "Graphic",
+				ChangeValue = "ShieldRush3D-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "ShieldWeaponRush",
+				ProjectileProperty = "DissipateGraphic",
+				ChangeValue = "ShieldRush3D-Out-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "GunWeapon",
+				ProjectileProperty = "Graphic",
+				ChangeValue = "GunWeaponProjectile-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "GunWeapon",
+				WeaponProperty = "FireFx",
+				ChangeValue = "GunFire-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "GunWeapon",
+				ProjectileProperty = "ImpactFx",
+				ChangeValue = "GunWeaponImpact-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "GunWeaponDash",
+				ProjectileProperty = "Graphic",
+				ChangeValue = "GunWeaponProjectile-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "GunWeaponDash",
+				WeaponProperty = "FireFx",
+				ChangeValue = "GunFire-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "GunWeaponDash",
+				ProjectileProperty = "ImpactFx",
+				ChangeValue = "GunWeaponImpact-Zeus",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+		},
+	},
+
+	DusaRushTrait =
+	{
+		InheritFrom = { "ShopTier1Trait" },
+		God = "Dusa",
+		Slot = "Rush",
+		Icon = "Boon_Poseidon_03",
+		RarityLevels =
+		{
+			Common =
+			{
+				Multiplier = 1.00,
+			},
+			Rare =
+			{
+				Multiplier = 1.20,
+			},
+			Epic =
+			{
+				Multiplier = 1.40,
+			},
+			Heroic =
+			{
+				Multiplier = 1.60,
+			}
+		},
+		PropertyChanges =
+		{
+			{
+				WeaponNames = WeaponSets.HeroRushWeapons,
+				WeaponProperty = "Projectile",
+				ChangeValue = "DusaRushProjectile",
+				ChangeType = "Absolute",
+			},
+			{
+				WeaponNames = WeaponSets.HeroRushWeapons,
+				WeaponProperty = "CancelAttachedProjectiles",
+				ChangeValue = false,
+				ChangeType = "Absolute",
+			},
+			{
+				WeaponNames = WeaponSets.HeroRushWeapons,
+				WeaponProperty = "FireGraphic",
+				ChangeValue = "ZagreusDashNoCollide_Poseidon",
+				ChangeType = "Absolute",
+			},
+
+			{
+				WeaponNames = WeaponSets.HeroRushWeapons,
+				WeaponProperty = "FireFx",
+				ChangeValue = "BlinkTrailVerticalB-Poseidon",
+				ChangeType = "Absolute",
+			},
+
+			{
+				WeaponNames = WeaponSets.HeroRushWeapons,
+				WeaponProperty = "BlinkDetonateAtOrigin",
+				ChangeValue = false,
+				ChangeType = "Absolute",
+			},
+			{
+				WeaponNames = WeaponSets.HeroRushWeapons,
+				WeaponProperty = "BlinkDetonateAtEndpoint",
+				ChangeValue = true,
+				ChangeType = "Absolute",
+			},
+			{
+				WeaponNames = WeaponSets.HeroRushWeapons,
+				WeaponProperty = "BlinkDetonateAtEndpointDelay",
+				ChangeValue = -0.1,
+				ChangeType = "Absolute",
+			},
+			{
+				WeaponNames = WeaponSets.HeroRushWeapons,
+				ProjectileProperty = "DamageLow",
+				BaseMin = 35,
+				BaseMax = 35,
+				DepthMult = DepthDamageMultiplier,
+				IdenticalMultiplier =
+				{
+					Value = DuplicateStrongMultiplier,
+				},
+				ExtractValue =
+				{
+					ExtractAs = "TooltipDamage",
+				}
+			},
+			{
+				WeaponNames = WeaponSets.HeroRushWeapons,
+				ProjectileProperty = "DamageHigh",
+				DeriveValueFrom = "DamageLow"
+			},
+			{
+				WeaponNames = WeaponSets.HeroRushWeapons,
+				EffectName = "OnHitStun",
+				EffectProperty = "Active",
+				ChangeValue = true,
+			},
+		},
+	},
+	
+	DusaWeakenTrait =
+	{
+		God = "Dusa",
+		InheritFrom = {"ShopTier2Trait"},
+		PreEquipWeapons = {"AphroditeShoutWeapon", "AreaWeakenAphrodite", "PoseidonAphroditeTouchWeapon"},
+		Icon = "Boon_Aphrodite_06",
+		PropertyChanges =
+		{
+			{
+				TraitName = "AphroditeWeaponTrait",
+				WeaponNames = WeaponSets.HeroPhysicalWeapons,
+				EffectName = "IncreaseDamageTaken",
+				EffectProperty = "Active",
+				ChangeValue = true,
+			},
+			{
+				TraitName = "DusaRangedTrait",
+				WeaponNames = WeaponSets.HeroNonPhysicalWeapons,
+				EffectName = "IncreaseDamageTaken",
+				EffectProperty = "Active",
+				ChangeValue = true,
+			},
+			{
+				WeaponNames = {"AphroditeShoutWeapon", "AreaWeakenAphrodite", "PoseidonAphroditeTouchWeapon" },
+				EffectName = "IncreaseDamageTaken",
+				EffectProperty = "Active",
+				ChangeValue = true,
+			},
+			{
+				WeaponNames = WeaponSets.HeroPhysicalWeapons,
+				EffectName = "IncreaseDamageTaken",
+				EffectProperty = "Modifier",
+				BaseMin = 0.10,
+				BaseMax = 0.10,
+				IdenticalMultiplier =
+				{
+					Value = DuplicateMultiplier,
+				},
+				ExtractValue =
+				{
+					ExtractAs = "TooltipDamage",
+					Format = "Percent",
+				},
+				ChangeType = "Add",
+				DeriveSource = "DeriveSource"
+			},
+			{
+				WeaponNames = WeaponSets.HeroNonPhysicalWeapons,
+				EffectName = "IncreaseDamageTaken",
+				EffectProperty = "Modifier",
+				DeriveValueFrom = "DeriveSource",
+			},
+			{
+				WeaponNames = {"AphroditeShoutWeapon", "AreaWeakenAphrodite", "PoseidonAphroditeTouchWeapon" },
+				EffectName = "IncreaseDamageTaken",
+				EffectProperty = "Modifier",
+				DeriveValueFrom = "DeriveSource",
+			},
+			{
+				TraitName = "DusaShoutTrait",
+				WeaponNames = WeaponSets.HeroRushWeapons,
+				EffectName = "IncreaseDamageTaken",
+				EffectProperty = "Active",
+				ChangeValue = true,
+			},
+			{
+				TraitName = "AphroditeRushTrait",
+				WeaponNames = WeaponSets.HeroRushWeapons,
+				EffectName = "IncreaseDamageTaken",
+				EffectProperty = "Modifier",
+				DeriveValueFrom = "DeriveSource",
+			},
+			{
+				TraitName = "AphroditeSecondaryTrait",
+				WeaponNames = WeaponSets.HeroSecondaryWeapons,
+				EffectName = "IncreaseDamageTaken",
+				EffectProperty = "Active",
+				ChangeValue = true,
+			},
+			{
+				TraitName = "AphroditeSecondaryTrait",
+				WeaponNames = WeaponSets.HeroSecondaryWeapons,
+				EffectName = "IncreaseDamageTaken",
+				EffectProperty = "Modifier",
+				DeriveValueFrom = "DeriveSource",
+			},
+			{
+				TraitName = "AphroditeDeathTrait",
+				WeaponNames = {"DeathAreaWeakenAphrodite"},
+				EffectName = "IncreaseDamageTaken",
+				EffectProperty = "Active",
+				ChangeValue = true,
+			},
+			{
+				TraitName = "AphroditeDeathTrait",
+				WeaponNames = {"DeathAreaWeakenAphrodite"},
+				EffectName = "IncreaseDamageTaken",
+				EffectProperty = "Modifier",
+				DeriveValueFrom = "DeriveSource",
+			},
+		}
+	},
+
+	DusaSecondaryTrait =
+	{
+		InheritFrom = { "ShopTier1Trait" },
+		Icon = "Boon_Artemis_00",
+		God = "Dusa",
+		Slot = "Secondary",
+		AddOutgoingDamageModifiers =
+		{
+			ValidWeaponMultiplier =
+			{
+				BaseValue = 1.4,
+				SourceIsMultiplier = true,
+				IdenticalMultiplier =
+				{
+					Value = DuplicateMultiplier,
+				},
+			},
+			ValidWeapons = WeaponSets.HeroSecondaryWeapons,
+			HealthBufferDamageMultiplier = 2.5,
+			ExtractValues =
+			{
+				{
+					Key = "ValidWeaponMultiplier",
+					ExtractAs = "TooltipDamage",
+					Format = "PercentDelta",
+				},
+			}
+		},
+		PropertyChanges =
+		{
+			{
+				WeaponName = "SwordParry",
+				ProjectileProperty = "DetonateGraphic",
+				ChangeValue = "RadialNovaSwordParry-Artemis",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "SpearWeaponThrow",
+				ProjectileProperty = "Graphic",
+				ChangeValue = "SpearThrowProjectile-Artemis",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "SpearWeaponThrowReturn",
+				ProjectileProperty = "Graphic",
+				ChangeValue = "SpearThrowProjectile-Artemis",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "SpearWeaponThrow",
+				ProjectileProperty = "StartFx",
+				ChangeValue = "ArtemisSpearThrowStartFx",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "BowSplitShot",
+				ProjectileProperty = "Graphic",
+				ChangeValue = "BowWeaponArrow-Artemis-SplitShot",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "BowSplitShot",
+				WeaponProperty = "ChargeStartFx",
+				ChangeValue = "BowCharge-Artemis",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "ShieldThrow",
+				ProjectileName = "ShieldThrow",
+				ProjectileProperty = "DetonateGraphic",
+				ChangeValue = "ShieldSwipe-Artemis",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "ShieldThrow",
+				WeaponProperty = "ChargeStartFx",
+				ChangeValue = "ShieldCharge-Artemis",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+			{
+				WeaponName = "GunGrenadeToss",
+				ProjectileProperty = "DetonateGraphic",
+				ChangeValue = "ZagGrenadeExplosionArtemis",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "ShieldThrow",
+				ProjectileProperty = "Graphic",
+				ChangeValue = "ProjectileShield-Artemis",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+			{
+				TraitName = "ShieldRushBonusProjectileTrait",
+				ProjectileProperty = "Graphic",
+				WeaponNames = { "ShieldThrow", "ChaosShieldThrow" },
+				ChangeValue = "ProjectileShieldAlt01-Artemis",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+			{
+				TraitName = "ShieldTwoShieldTrait",
+				ProjectileProperty = "Graphic",
+				WeaponName = "ShieldThrow",
+				ChangeValue = "ProjectileShieldAlt02-Poseidon",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+			{
+				TraitName = "ShieldTwoShieldTrait",
+				WeaponName = "ShieldThrow",
+				ProjectileName = "ShieldThrow",
+				ProjectileProperty = "DetonateGraphic",
+				ChangeValue = "ShieldThrowTrailMirage-Artemis",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+			{
+				WeaponName = "GunGrenadeToss",
+				WeaponProperty = "FireFx",
+				ChangeValue = "SwordSwipeAFlipped-Artemis",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+
+			{
+				WeaponName = "GunGrenadeToss",
+				ProjectileProperty = "StartFx",
+				ChangeValue = "SwordSwipeA-Emitter-Artemis",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+			{
+				TraitName = "SpearTeleportTrait",
+				WeaponName = "SpearRushWeapon",
+				ProjectileName = "SpearRushWeapon",
+				ProjectileProperty = "DetonateGraphic",
+				ChangeValue = "SpearRushTrailFx-Artemis",
+				ChangeType = "Absolute",
+				ExcludeLinked = true,
+			},
+		},
+	},	
+
+
+//Add to Gameplay.sjson inside Obstacles
+
+{
+      Name = "DusaUpgrade"
+      InheritFrom = "BaseBoon"
+      DisplayInEditor = true
+      Thing =
+      {
+        EditorOutlineDrawBounds = false
+        Graphic = "BoonOrbChaosBack"
+      }
+}
+
+//Add to PlayerProjectiles.sjson inside Projectiles
+
+	{
+      Name = "DusaProjectile"
+      InheritFrom = "1_BasePlayerSmallProjectile"
+      Fuse = 2.2
+      Type = "HOMING"
+      HomingAllegiance = "ENEMIES"
+      FlashBeforeExpireDuration = 1
+      ImpactFx = "DustRingFrontPetrified"
+      ImpactSound = "null"
+      DetonateGraphic = "RubbleFallImpactDebris"
+      DetonateSound = "/SFX/PillarBoulderDestroyedSmall"
+      AffectsEnemies = true
+      AffectsFriends = true
+      AffectsSelf = false
+      CheckUnitImpact = true
+      CheckObstacleImpact = true
+      Acceleration = 0
+      MaxAdjustRate = 130
+      Speed = 410
+      Range = 3000
+      DamageLow = 2
+      DamageHigh = 2
+      SelfDamageMultiplier = 5
+      FriendDamageMultiplier = 5
+      CanBeProjectileDefenseDestroyed = false
+      GroupName = "Standing"
+      Effects = [
+		  {
+			Name = "FreezeStun"
+			Duration = 3.0
+			DisableMove = true
+			DisableRotate = true
+			DisableAttack = true
+			DisableDodge = true
+			Active = true
+			CanAffectInvulnerable = false
+			FrontFx = "StatusIconPetrified"
+			FlashFrontFxWhenExpiring = true
+			ExtendDurationOnReapply = false
+			BlockDurationOnExpire = 0.25
+		  }
+		  {
+            Name = "IncreaseDamageTaken"
+            Type = "DAMAGE_TAKEN"
+            Duration = 4
+            Modifier = 1
+            Active = false
+		  }		  
+		]
+      Thing = {
+        Graphic = "PetrifyShot"
+        OffsetZ = 70
+        AttachedAnim = "LootShadowPetrifyProjectile"
+        Grip = 999999
+        Points = [
+          {
+            X = 4
+            Y = 6
+          }
+          {
+            X = 12
+            Y = 2
+          }
+          {
+            X = 12
+            Y = -2
+          }
+          {
+            X = 4
+            Y = -6
+          }
+          {
+            X = -4
+            Y = -6
+          }
+          {
+            X = -12
+            Y = -2
+          }
+          {
+            X = -12
+            Y = 2
+          }
+          {
+            X = -4
+            Y = 6
+          }
+        ]
+      }
+    }
+	{
+      Name = "DusaSuperProjectile"
+      InheritFrom = "1_BasePlayerSmallProjectile"
+      Fuse = 2.2
+      Type = "HOMING"
+      HomingAllegiance = "ENEMIES"
+      FlashBeforeExpireDuration = 1
+      ImpactFx = "DustRingFrontPetrified"
+      ImpactSound = "null"
+      DetonateGraphic = "RubbleFallImpactDebris"
+      DetonateSound = "/SFX/PillarBoulderDestroyedSmall"
+      AffectsEnemies = true
+      AffectsFriends = true
+      AffectsSelf = false
+      CheckUnitImpact = true
+      CheckObstacleImpact = true
+      Acceleration = 0
+      MaxAdjustRate = 130
+      Speed = 1000
+      Range = 3000
+      DamageLow = 2
+      DamageHigh = 2
+      SelfDamageMultiplier = 5
+      FriendDamageMultiplier = 5
+      CanBeProjectileDefenseDestroyed = false
+      GroupName = "Standing"
+      Effects = [
+		  {
+			Name = "FreezeStun"
+			Duration = 6.0
+			DisableMove = true
+			DisableRotate = true
+			DisableAttack = true
+			DisableDodge = true
+			Active = true
+			CanAffectInvulnerable = false
+			FrontFx = "StatusIconPetrified"
+			FlashFrontFxWhenExpiring = true
+			ExtendDurationOnReapply = false
+			BlockDurationOnExpire = 0.25
+		  }
+		  {
+            Name = "IncreaseDamageTaken"
+            Type = "DAMAGE_TAKEN"
+            Duration = 4
+            Modifier = 1
+            Active = false
+		  }
+	  ]
+      Thing = {
+        Graphic = "PetrifyShot"
+        OffsetZ = 70
+        AttachedAnim = "LootShadowPetrifyProjectile"
+        Grip = 999999
+        Points = [
+          {
+            X = 4
+            Y = 6
+          }
+          {
+            X = 12
+            Y = 2
+          }
+          {
+            X = 12
+            Y = -2
+          }
+          {
+            X = 4
+            Y = -6
+          }
+          {
+            X = -4
+            Y = -6
+          }
+          {
+            X = -12
+            Y = -2
+          }
+          {
+            X = -12
+            Y = 2
+          }
+          {
+            X = -4
+            Y = 6
+          }
+        ]
+      }
+    }
+	{
+      Name = "DusaRushProjectile"
+      InheritFrom = "DefaultRushProjectile"
+      DetonateSound = "/SFX/Player Sounds/PoseidonWaterArrowFire"
+      DetonateGraphic = "PoseidonProjectileImpactRush"
+      Type = "STRAIGHT"
+      Fuse = 0.12
+      Range = 250
+      DamageLow = 5
+      DamageHigh = 5
+      DamageRadius = 300.0
+      DamageRadiusScaleY = 0.6
+      DamageRadiusScaleX = 1.1
+      UseRadialImpact = true
+      ImpactVelocity = 2500.0
+      ImpactVelocityCap = 2500.0
+      AutoAdjustForTarget = false
+      UseVulnerability = false
+      NumPenetrations = 999
+      SilentImpactOnInvulnerable = true
+      BlastSpeed = 2500
+      AttachToOwner = true
+      Thing = {
+        Graphic = "null"
+        OffsetZ = 70
+        AttachedAnim = "null"
+        RotateGeometry = true
+        Grip = 999999
+        Points = [
+          {
+            X = 48
+            Y = 48
+          }
+          {
+            X = 48
+            Y = -48
+          }
+          {
+            X = -48
+            Y = -48
+          }
+          {
+            X = -48
+            Y = 48
+          }
+        ]
+      }
+      Effects = [
+        {
+          Name = "FreezeStun"
+          Duration = 0.5
+          DisableMove = true
+          DisableRotate = true
+          DisableAttack = true
+          DisableDodge = true
+		  Active = true
+		  Modifier = 1
+          CanAffectInvulnerable = false
+          FrontFx = "StatusIconPetrified"
+          FlashFrontFxWhenExpiring = true
+          ExtendDurationOnReapply = false
+          BlockDurationOnExpire = 4
+        }
+		{
+          Name = "IncreaseDamageTaken"
+          Type = "DAMAGE_TAKEN"
+          Duration = 4
+          Modifier = 1
+          Active = false
+        }
+      ]
+    }
+
+//Add to PlayerWeapons.sjson inside Weapons
+
+{
+      Name = "DusaMaxShoutWeapon"
+      InheritFrom = "1_BaseMagicWeapon"
+      Type = "GUN"
+      Projectile = "DusaSuperProjectile"
+      FullyAutomatic = true
+      FireFx = "null"
+      IgnoreOwnerAttackDisabled = true
+      RootOwnerWhileFiring = true
+      BlockMoveInput = true
+      CancelMovement = true
+      ChargeCancelMovement = true
+      BarrelLength = 32
+      AutoLock = true
+      AutoLockRange = 1000
+      AutoLockArcDistance = 75
+      AutoLockWithMouse = false
+      ShowFreeAimLine = true
+      AimLineAnimation = "AuraAimLineNoMovement"
+      ChargeStartAnimation = "ZagreusRangedWeapon_Charge"
+      FireGraphic = "ZagreusRangedWeapon_Fire"
+      LockTriggerForCharge = true
+      NumProjectiles = 20
+      ProjectileAngleOffset = 40
+      ProjectileOffsetStart = "LEFT"
+      ProjectileInterval = 0.03
+    }
+    {
+      Name = "DusaShoutWeapon"
+      InheritFrom = "1_BaseMagicWeapon"
+      Type = "GUN"
+      Projectile = "DusaSuperProjectile"
+      FullyAutomatic = true
+      FireFx = "null"
+      IgnoreOwnerAttackDisabled = true
+      RootOwnerWhileFiring = true
+      BlockMoveInput = true
+      CancelMovement = true
+      ChargeCancelMovement = true
+      BarrelLength = 32
+      AutoLock = true
+      AutoLockRange = 1000
+      AutoLockArcDistance = 75
+      AutoLockWithMouse = false
+      ShowFreeAimLine = true
+      AimLineAnimation = "AuraAimLineNoMovement"
+      ChargeStartAnimation = "ZagreusRangedWeapon_Charge"
+      FireGraphic = "ZagreusRangedWeapon_Fire"
+      LockTriggerForCharge = true
+      NumProjectiles = 3
+      ProjectileAngleOffset = 40
+      ProjectileOffsetStart = "LEFT"
+      ProjectileInterval = 0.03
+    }
+
