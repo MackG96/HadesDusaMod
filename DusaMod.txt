@@ -1441,7 +1441,7 @@ end
       Thing =
       {
         EditorOutlineDrawBounds = false
-        Graphic = "BoonOrbChaosBack"
+	Graphic = "BoonDropChaos"
       }
 }
 
